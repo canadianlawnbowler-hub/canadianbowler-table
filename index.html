@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Canadian Bowler Table</title>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background-color: #ffffff;
+      color: #00274D;
+      margin: 2em;
+    }
+    h1 {
+      color: #D62828;
+      text-align: center;
+      margin-bottom: 1em;
+    }
+    table.dataTable thead {
+      background-color: #00274D;
+      color: white;
+    }
+    table.dataTable tbody tr:hover {
+      background-color: #f2f2f2;
+    }
+    .container {
+      max-width: 1000px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Canadian Bowler Stats</h1>
+    <table id="bowlerTable" class="display" style="width:100%">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Province</th>
+          <th>Club</th>
+          <th>Ranking</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data will be loaded here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      // Replace with your actual Google Sheet CSV export URL
+      const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRm5aQ0DqY9tG8rYoM-BeiIgwx3hL3ik6TizWAB54XXtBpWssR4NGkAMwSO486RdsevKrKI2cT_lrKf/pub?gid=2059228738&single=true&output=csv';
+
+      $.get(sheetURL, function (data) {
+        const rows = data.split('\n').slice(1); // Skip header
+        rows.forEach(row => {
+          const cols = row.split(',');
+          $('#bowlerTable tbody').append(`
+            <tr>
+              <td>${cols[0]}</td>
+              <td>${cols[1]}</td>
+              <td>${cols[2]}</td>
+              <td>${cols[3]}</td>
+            </tr>
+          `);
+        });
+        $('#bowlerTable').DataTable();
+      });
+    });
+  </script>
+</body>
+</html>
